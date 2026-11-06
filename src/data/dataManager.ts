@@ -11,6 +11,11 @@ export class DataManager {
     private readonly _logger = new Logger('Data', 'DataManager')
 
     /**
+     * Callback invoked when we resolve an asset.
+     */
+    onAssetResolved? : (url: string) => unknown
+
+    /**
      * The loading manager exposed by this data manager.
      */
     public loader : LoadingManager
@@ -99,6 +104,7 @@ export class DataManager {
             const maybeResolved = provider.getUrl(relativePath)
 
             if (maybeResolved !== undefined) {
+                this.onAssetResolved?.(maybeResolved)
                 return maybeResolved
             }
         }
